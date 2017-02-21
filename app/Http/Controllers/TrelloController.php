@@ -9,7 +9,7 @@ use Trello\Client;
 
 use App\Repository\Trello;
 use App\Webhook;
-use App\Hookerror;
+use App\HookError;
 
 class TrelloController extends Controller
 {
@@ -114,7 +114,7 @@ class TrelloController extends Controller
             $webhook->save();
             return 1;
         } catch (Exception $e) {
-            Hookerror::insert($e->getMessage());
+            HookError::insert($e->getMessage());
             return 0;
         }
     }
@@ -128,7 +128,7 @@ class TrelloController extends Controller
 
     public function errorhooks()
     {
-        $errors = Hookerror::all();
+        $errors = HookError::all();
 
         return $errors;
     }
