@@ -34,8 +34,8 @@ class TrelloController extends Controller
     public function index()
     {
         // return $this->getListsByBoard();
-        // return $this->saveBoard();
-        return $this->readBoard();
+        return $this->saveBoard();
+        // return $this->readBoard();
     }
 
     public function getListsByBoard()
@@ -84,9 +84,11 @@ class TrelloController extends Controller
 
     public function readBoard()
     {
-        $boardId = '57afc59dfd062df71d0c9100';
+        $boardId = '589d8ed08751cb56eed23f5e';
 
-        $board = $this->client->api('boards')->show($boardId);
+        $opsi = array('lists' => 'all');
+
+        $board = $this->client->api('boards')->show($boardId, $opsi);
 
         return $board;
     }
@@ -129,5 +131,14 @@ class TrelloController extends Controller
         $errors = Hookerror::all();
 
         return $errors;
+    }
+
+    public function gethook()
+    {
+        $id = '58ac94ba1153e9cae7035bcc';
+
+        $hook = $this->client->api('webhooks')->show($id);
+
+        return $hook;
     }
 }
