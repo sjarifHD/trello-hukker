@@ -8,6 +8,8 @@ use Carbon\Carbon;
 use Trello\Client;
 
 use App\Repository\Trello;
+use App\Webhook;
+use App\Hookerror;
 
 class TrelloController extends Controller
 {
@@ -31,8 +33,9 @@ class TrelloController extends Controller
 
     public function index()
     {
-        return $this->getListsByBoard();
+        // return $this->getListsByBoard();
         // return $this->saveBoard();
+        return $this->readBoard();
     }
 
     public function getListsByBoard()
@@ -73,8 +76,58 @@ class TrelloController extends Controller
 
     public function boards()
     {
+        // return saved boards
         $trello = new Trello();
         $boards = $trello->getAllBoards();
         return $boards;
+    }
+
+    public function readBoard()
+    {
+        $boardId = '57afc59dfd062df71d0c9100';
+
+        $board = $this->client->api('boards')->show($boardId);
+
+        return $board;
+    }
+
+    public function regHook()
+    {
+        $data = array(
+            'description' => 'test trello webhook with laravel',
+            'idModel' => '589d8ed08751cb56eed23f5e',
+            'callbackURL' => 'https://trello-huker.herokuapp.com/trello/hooks',
+            'active' => ''
+        );
+
+        return $this->client->api('webhooks')->create($data);
+    }
+
+    public function storeHook(Request $request)
+    {
+        $webhook = new Webhook;
+        $webhook->hook_data = $request->json()->all();
+
+        try {
+            $webhook->save();
+            return 1;
+        } catch (Exception $e) {
+            Hookerror::insert($e->getMessage());
+            return 0;
+        }
+    }
+
+    public function hooks()
+    {
+        $hooks = Webhook::all();
+
+        return $hooks;
+    }
+
+    public function errorhooks()
+    {
+        $errors = Hookerror::all();
+
+        return $errors;
     }
 }

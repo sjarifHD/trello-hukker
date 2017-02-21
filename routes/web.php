@@ -17,3 +17,8 @@ Route::get('/', function () {
 
 Route::get('/trello', 'TrelloController@index');
 Route::get('/trello/boards', 'TrelloController@boards');
+
+Route::get('/trello/reghook', 'TrelloController@regHook');
+Route::get('/trello/hooks', 'TrelloController@hooks');
+Route::get('/trello/errorhooks', 'TrelloController@errorhooks');
+Route::post('/trello/storehook', 'TrelloController@storeHook');
