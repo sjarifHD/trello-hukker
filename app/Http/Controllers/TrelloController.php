@@ -34,8 +34,8 @@ class TrelloController extends Controller
     public function index()
     {
         // return $this->getListsByBoard();
-        return $this->saveBoard();
-        // return $this->readBoard();
+        // return $this->saveBoard();
+        return $this->readBoard();
     }
 
     public function getListsByBoard()
